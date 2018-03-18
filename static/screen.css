@@ -1,0 +1,293 @@
+@keyframes log-movement {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(0, -3600rem);
+  }
+}
+
+@keyframes scale-entry {
+  0% {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes width-entry {
+  0% {
+    opacity: 0;
+    max-width: 0;
+  }
+  100% {
+    opacity: 1;
+    max-width: 400px;
+  }
+}
+
+@keyframes hud-item-loading {
+  0% { transform: rotate(0); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes element-entry {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes hide-element {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes bs-message-display {
+  0% {
+    opacity: 0;
+    transform: translate(0, 50rem);
+  }
+  25% {
+    opacity: 1;
+    transform: translate(0, 10rem);
+  }
+  75% {
+    opacity: 1;
+    transform: translate(0, 10rem);
+  }
+  100% {
+    opacity: .25;
+    transform: translate(0, 0);
+  }
+}
+
+button {
+  background: rgba(255,255,255, .2);
+  border: 1px solid rgba(255,255,255, .25);
+  border-radius: .2rem;
+  color: #fff;
+  padding: .5rem 1.5rem;
+  font-size: 2rem;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body, button {
+  font-family: 'Coda';
+}
+
+body {
+  background: #0c2d7c url(./bg.png);
+  background-size: cover;
+  background-position: center center;
+  color: #fff;
+  overflow: hidden;
+  transition: background-color 3s;
+}
+
+body.done {
+  background-color: #00561b;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: 1000px;
+  position: relative;
+  height: 100%;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.hud {
+  display: flex;
+  justify-content: center;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.hud-bottom {
+  top: auto;
+  bottom: 0;
+}
+
+.info-background {
+  background: rgba(255,255,255,.15);
+  height: 5rem;
+  position: relative;
+  width: 100%;
+}
+
+.info-background:after {
+  border: 1px dotted rgba(255,255,255,.15);
+  bottom: -2px;
+  content: ' ';
+  left: 0;
+  padding: 1px;
+  position: absolute;
+  right: 0;
+  top: -2px;
+}
+
+.hud-background {
+  position: absolute;
+  top: 3rem;
+}
+
+.hud-background-bottom {
+  top: auto;
+  bottom: 3rem;
+}
+
+.name-background {
+  height: 10rem;
+}
+
+#bgWrapper {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.hud-item, .hud-item:after {
+  border: 0.25rem solid rgba(255,255,255, .2);
+  border-radius: 50%;
+  width: 7rem;
+  height: 7rem;
+  padding: .5rem;
+}
+
+.hud-item:after {
+  border: 2px dotted rgba(255,255,255, .2);
+  content: ' ';
+  padding: .8rem;
+  position: absolute;
+  transition: border-color 2s;
+}
+
+.hud-item {
+  flex-direction: column;
+  margin: 1rem .5rem;
+}
+
+.hud-item-loading:after {
+  animation-name: hud-item-loading;
+  animation-duration: 10s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  border-color: rgba(255,255,255, .75);
+  content: ' ';
+}
+
+.hud-item-label,
+.hud-item-value {
+  text-align: center;
+}
+
+.hud-item-label {
+  font-size: .75rem;
+}
+
+.hud-item-value {
+  font-size: 1rem;
+}
+
+.name-picker {
+  display: flex;
+}
+
+.anim-scale-entry {
+  animation-name: scale-entry;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
+.anim-width-entry {
+  animation-name: width-entry;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
+.anim-entry {
+  animation-name: element-entry;
+  animation-duration: .33s;
+  animation-fill-mode: forwards;
+}
+
+.name-char-placeholder {
+  align-items: center;
+  background: rgba(255,255,255,.25);
+  border-radius: 3px;
+  display: flex;
+  height: 1.25rem;
+  justify-content: center;
+  margin: 0.25rem;
+  opacity: 0;
+  padding: .25rem;
+  text-align: center;
+  transition: background-color .5s;
+  width: 1rem;
+}
+
+.name-char-placeholder-updated {
+  background: rgba(255,255,255,.55);
+  transition: background-color .1s;
+}
+
+.hidden-element {
+  animation-duration: .33s;
+  animation-fill-mode: forwards;
+  animation-name: hide-element;
+}
+
+.bs-messages {
+  animation-duration: 3600s;
+  animation-name: log-movement;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  left: 0;
+  overflow: hidden;
+  padding-top: 20rem;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.bs-message {
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+  animation-name: bs-message-display;
+  margin: 0 auto;
+  text-align: center;
+}
+
+h1 {
+  opacity: 0;
+  transition: opacity 2s;
+}
+
+.done h1 {
+  opacity: 1;
+}
