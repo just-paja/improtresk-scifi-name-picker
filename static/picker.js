@@ -320,6 +320,7 @@ const renderPicker = (names) => {
       },
       next => renderHudBackground(body, next),
       next => renderBottomHudBackground(body, next),
+      next => setTimeout(next, 2200),
       next => renderHudItem(hudTop, 'Neurální sítě', [
         '3548',
       ], next),
