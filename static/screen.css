@@ -62,7 +62,7 @@
     transform: translate(0, 10rem);
   }
   100% {
-    opacity: .25;
+    opacity: .1;
     transform: translate(0, 0);
   }
 }
@@ -86,6 +86,7 @@ body, button {
 }
 
 body {
+  font-size: 20px;
   background: #0c2d7c url(./bg.png);
   background-size: cover;
   background-position: center center;
@@ -130,21 +131,21 @@ body.done {
 }
 
 .info-background {
-  background: rgba(255,255,255,.15);
+  background: rgba(255,255,255,.25);
   height: 5rem;
   position: relative;
   width: 100%;
 }
 
 .info-background:after {
-  border: 1px dotted rgba(255,255,255,.15);
-  bottom: -2px;
+  border: 2px dotted rgba(255,255,255,.15);
+  bottom: -3px;
   content: ' ';
   left: 0;
   padding: 1px;
   position: absolute;
   right: 0;
-  top: -2px;
+  top: -3px;
 }
 
 .hud-background {
@@ -170,7 +171,7 @@ body.done {
 }
 
 .hud-item, .hud-item:after {
-  border: 0.25rem solid rgba(255,255,255, .2);
+  border: 0.5rem solid rgba(255,255,255, .2);
   border-radius: 50%;
   width: 7rem;
   height: 7rem;
@@ -178,9 +179,9 @@ body.done {
 }
 
 .hud-item:after {
-  border: 2px dotted rgba(255,255,255, .2);
+  border: 3px dotted rgba(255,255,255, .2);
   content: ' ';
-  padding: .8rem;
+  padding: 1.05rem;
   position: absolute;
   transition: border-color 2s;
 }
@@ -239,14 +240,14 @@ body.done {
   background: rgba(255,255,255,.25);
   border-radius: 3px;
   display: flex;
-  height: 1.25rem;
+  height: 1.8rem;
   justify-content: center;
   margin: 0.25rem;
   opacity: 0;
-  padding: .25rem;
+  padding: .15rem;
   text-align: center;
   transition: background-color .5s;
-  width: 1rem;
+  width: 1.5rem;
 }
 
 .name-char-placeholder-updated {
@@ -268,7 +269,7 @@ body.done {
   flex-direction: column;
   left: 0;
   overflow: hidden;
-  padding-top: 20rem;
+  padding-top: 5rem;
   pointer-events: none;
   position: absolute;
   right: 0;
@@ -281,10 +282,13 @@ body.done {
   animation-name: bs-message-display;
   margin: 0 auto;
   text-align: center;
+  text-shadow: 0 0 3px rgba(255,255,255,.5);
 }
 
 h1 {
+  margin: 1rem 0;
   opacity: 0;
+  font-weight: normal;
   transition: opacity 2s;
 }
 

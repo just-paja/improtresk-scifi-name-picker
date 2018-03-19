@@ -118,7 +118,7 @@ const renderPlaceholders = (parent, size, next) => {
 const renderNameDisplay = (root, names, next) => {
   const nameDisplay = $('<div class="flex-center name-picker" />');
   const longestName = findLongestName(names);
-  nameDisplay.css({ width: `${longestName * 2}rem` })
+  nameDisplay.css({ width: `${longestName * 2 + 2}rem` })
   root.append(nameDisplay);
   nameDisplay.shuffle = () => {
     nameDisplay.placeholders.forEach(placeholder => placeholder.shuffle());
@@ -267,7 +267,7 @@ const renderPicker = (names) => {
       ], next),
       next => playBullshitMessages(messenger, bullshitMessages[4], TIME_BS_MESSAGE, next),
       next => renderHudItem(hudBottom, 'Rovníková rychlost', [
-        '<small>465,1</small>',
+        '465,1',
         '<small>m·s<sup>-1</sup></small>',
       ], next),
       next => playBullshitMessages(messenger, bullshitMessages[5], TIME_BS_MESSAGE, next),
