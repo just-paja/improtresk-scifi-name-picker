@@ -11,6 +11,7 @@
   ></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment-with-locales.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/async/2.6.0/async.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.9/howler.core.min.js"></script>
   <script src="./static/picker.js"></script>
   <script>
     const winners = [
@@ -21,7 +22,7 @@
 
     $(() => {
       moment.locale(window.navigator.language);
-      renderPicker(winners);
+      prepareSounds(() => renderPicker(winners));
     });
   </script>
   <title>Sci-Fi name picker</title>

@@ -1,7 +1,59 @@
-const TIME_BS_MESSAGE = 1300;
+const TIME_BS_MESSAGE = 1350;
 const TIME_GENERATOR = 10000;
 // const TIME_BS_MESSAGE = 200;
 // const TIME_GENERATOR = 2000;
+
+const sounds = {
+  start: './static/sounds/computerbeep_8.mp3',
+  auth: './static/sounds/security-clearance-accepted.mp3',
+  ready: './static/sounds/ready.mp3',
+  done: './static/sounds/alert03-4x.mp3',
+  inputOk: [
+    './static/sounds/input_ok_3_clean.mp3',
+  ],
+  processing: [
+    './static/sounds/processing.mp3',
+    './static/sounds/processing2.mp3',
+  ],
+  openGenerator: './static/sounds/incoming_hail3.mp3',
+  warpBubbleStable: './static/sounds/warp-bubble-stable.mp3',
+  facebookCatalogued: './static/sounds/facebook-catalogued.mp3',
+  generated: './static/sounds/generated.mp3',
+  generating: [
+    './static/sounds/keyok1-quiet.mp3',
+    './static/sounds/keyok2-quiet.mp3',
+    './static/sounds/keyok3-quiet.mp3',
+    './static/sounds/keyok5-quiet.mp3',
+  ],
+};
+
+const soundBank = {
+  sounds: {},
+};
+
+soundBank.getSound = (sound) => soundBank.sounds[sound];
+
+const prepareSound = (sound) => {
+  soundBank.sounds[sound] = new Howl({
+    src: [sound],
+  })
+};
+
+const prepareSounds = (next) => {
+  Object.keys(sounds).map(key => sounds[key] instanceof Array ?
+    sounds[key].map(prepareSound) :
+    prepareSound(sounds[key])
+  );
+  const tasks = Object.keys(soundBank.sounds).map(soundKey => next => {
+    const sound = soundBank.getSound(soundKey);
+    if (sound.state() === 'loaded') {
+      next();
+    } else {
+      sound.once('load', next);
+    }
+  });
+  async.parallel(tasks, next);
+};
 
 const bullshitMessages = [
   [
@@ -53,6 +105,17 @@ const generateRandomInt = maxSize => Math.floor(Math.random() * Math.floor(maxSi
 
 const generateRandomLetter = () => letters[generateRandomInt(letters.length)];
 
+const getRandomSound = audio => audio[generateRandomInt(audio.length)];
+
+const playSound = (audioFile, next) => {
+  const sound = audioFile instanceof Array ? getRandomSound(audioFile) : audioFile;
+  const audio = soundBank.getSound(sound);
+  audio.play();
+  if (next) {
+    next();
+  }
+};
+
 const renderPlaceholder = (parent, next) => {
   const placeholder = $('<div class="anim-entry name-char-placeholder" />');
   parent.append(placeholder);
@@ -64,6 +127,7 @@ const renderPlaceholder = (parent, next) => {
   placeholder.setLetter = (letter) => {
     placeholder.html(letter);
     placeholder.addClass('name-char-placeholder-updated');
+    playSound(sounds.generating);
     setTimeout(() => {
       placeholder.removeClass('name-char-placeholder-updated');
     }, 100);
@@ -148,6 +212,7 @@ const generateName = (nameDisplay, names, next) => {
 const renderNameBackground = (root, next) => {
   const item = $('<div class="anim-scale-entry info-background name-background" />');
   root.append(item);
+  playSound(sounds.openGenerator);
   setTimeout(next, 300);
 };
 
@@ -170,6 +235,7 @@ const renderHudItem = (hud, label, values, next) => {
     renderHudItemContent(item, label,values);
   }, 1500);
   hud.append(item);
+  playSound(sounds.processing);
   next();
 };
 
@@ -193,7 +259,7 @@ const renderBottomHudBackground = (root, next) => {
 
 const renderStartButton = () => {
   const button = $('<button class="name-picker-start" />');
-  button.html('Spustit');
+  button.html('Vygenerovat vítěze');
   return button;
 };
 
@@ -206,6 +272,7 @@ const renderBullshitMessage = (message) => {
 const playBullshitMessage = (messenger, message, speed, next) => {
   const item = renderBullshitMessage(message);
   messenger.append(item);
+  playSound(sounds.inputOk);
   setTimeout(next, speed);
 };
 
@@ -216,7 +283,11 @@ const playBullshitMessages = (messenger, messages, speed, next) => {
   async.series(tasks, next);
 };
 
-const renderMessenger = () => $('<div class="bs-messages" />');
+const renderMessenger = (root) => {
+  const messenger = $('<div class="bs-messages" />');
+  root.append(messenger);
+  return messenger;
+};
 
 const hideElement = (element, next) => {
   element.addClass('hidden-element');
@@ -233,14 +304,20 @@ const renderPicker = (names) => {
   const heading = $('<div id="heading"><h1>Improtřesk 2018 zdarma</h1></div>');
   const hudBottom = renderHud('bottom');
   const hudTop = renderHud('top');
-  const messenger = renderMessenger();
   const startButton = renderStartButton();
 
+  let messenger;
   let nameDisplay;
 
   const play = () => {
     async.series([
+      next => playSound(sounds.start, next),
       next => hideElement(startButton, next),
+      next => playSound(sounds.auth, next),
+      next => {
+        messenger = renderMessenger(root);
+        next();
+      },
       next => renderHudBackground(body, next),
       next => renderBottomHudBackground(body, next),
       next => renderHudItem(hudTop, 'Neurální sítě', [
@@ -270,11 +347,13 @@ const renderPicker = (names) => {
         '465,1',
         '<small>m·s<sup>-1</sup></small>',
       ], next),
+      next => playSound(sounds.warpBubbleStable, next),
       next => playBullshitMessages(messenger, bullshitMessages[5], TIME_BS_MESSAGE, next),
       next => renderHudItem(hudTop, 'Počet jmen', [names.length], next),
       next => playBullshitMessages(messenger, bullshitMessages[6], TIME_BS_MESSAGE, next),
       next => renderHudItem(hudBottom, 'Atmosférický tlak', ['1013,25', '<small>hPa</small>'], next),
       next => playBullshitMessages(messenger, bullshitMessages[7], TIME_BS_MESSAGE, next),
+      next => playSound(sounds.facebookCatalogued, next),
       next => renderHudItem(hudBottom, 'Délka sekvence', ['746', '<small>members</small>'], next),
       next => playBullshitMessages(messenger, bullshitMessages[8], TIME_BS_MESSAGE, next),
       next => hideElement(messenger, next),
@@ -289,14 +368,19 @@ const renderPicker = (names) => {
     ], () => {
       body.addClass('done');
       console.log('done');
+      playSound(sounds.done);
+      playSound(sounds.generated);
     });
   };
 
   root.append(heading);
   root.append(hudBottom);
   root.append(hudTop);
-  root.append(messenger);
   root.append(startButton);
+
+  setTimeout(() => {
+    playSound(sounds.ready);
+  }, 2000);
 
   startButton.click(play);
 };
